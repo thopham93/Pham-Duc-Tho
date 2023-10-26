@@ -11,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import api from "../api";
 import { catchError, finalize, of } from "rxjs";
 import { useForm } from "react-hook-form";
+import useLoading from "../hooks/useLoading";
 
 const Container = styled(Grid)(() => ({
   display: "flex",
@@ -37,7 +38,7 @@ const CurrencyConverter = () => {
 
   const [exchangeRate, setExchangeRate] = useState<number>(0);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isLoading, dismissLoader, showLoader } = useLoading();
 
   const { handleSubmit, control, getValues, watch } = useForm<IFormInput>({
     defaultValues: defaultValues,
@@ -57,7 +58,7 @@ const CurrencyConverter = () => {
     currency_to: string,
     amount: number
   ) => {
-    setIsLoading(true);
+    showLoader();
     return api
       .get("/get_estimated", {
         api_key: process.env.REACT_APP_API_KEY,
@@ -68,7 +69,7 @@ const CurrencyConverter = () => {
       })
       .pipe(
         catchError((error) => of(error)),
-        finalize(() => setIsLoading(false))
+        finalize(() => dismissLoader())
       )
       .subscribe((resp) => {
         if (typeof resp === "string" || resp instanceof String) {
@@ -80,7 +81,7 @@ const CurrencyConverter = () => {
   };
 
   const fetchPairCurrencies = (currency_from: string) => {
-    setIsLoading(true);
+    showLoader();
     return api
       .get("/get_pairs", {
         api_key: process.env.REACT_APP_API_KEY,
@@ -89,7 +90,7 @@ const CurrencyConverter = () => {
       })
       .pipe(
         catchError((error) => of(error)),
-        finalize(() => setIsLoading(false))
+        finalize(() => dismissLoader())
       )
       .subscribe((resp: any) => {
         const filterCurrencies = currencies.filter((val) =>
@@ -101,14 +102,14 @@ const CurrencyConverter = () => {
 
   useEffect(() => {
     const fetchAllCurrencies = () => {
-      setIsLoading(true);
+      showLoader();
       return api
         .get("/get_all_currencies", {
           api_key: process.env.REACT_APP_API_KEY,
         })
         .pipe(
           catchError((error) => of(error)),
-          finalize(() => setIsLoading(false))
+          finalize(() => dismissLoader())
         )
         .subscribe((resp: any) => setCurrencies(resp));
     };
