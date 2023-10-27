@@ -153,7 +153,7 @@ const CurrencyConverter = () => {
           <CurrencyOption
             name="fromCurrency"
             control={control}
-            label="Choose a currency"
+            label="From currency"
             options={currencies}
           />
           <IconButton aria-label="btn-swap">
@@ -162,7 +162,7 @@ const CurrencyConverter = () => {
           <CurrencyOption
             name="toCurrency"
             control={control}
-            label="Choose a currency"
+            label="To currency"
             options={pairCurrencies}
           />
         </Container>
