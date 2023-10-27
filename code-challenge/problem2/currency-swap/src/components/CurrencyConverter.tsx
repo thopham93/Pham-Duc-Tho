@@ -205,7 +205,7 @@ const CurrencyConverter = () => {
                     color: "#805AD5",
                   }}
                 >
-                  {`${exchangeRate} ${watch("toCurrency")}`}
+                  {`= ${exchangeRate} ${watch("toCurrency")}`}
                 </Typography>
               </Grid>
             </Grid>
