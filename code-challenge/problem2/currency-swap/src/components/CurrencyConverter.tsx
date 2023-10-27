@@ -149,7 +149,7 @@ const CurrencyConverter = () => {
         }}
         elevation={3}
       >
-        <Container direction="column">
+        <Container container direction="column">
           <CurrencyOption
             name="fromCurrency"
             control={control}
@@ -166,7 +166,7 @@ const CurrencyConverter = () => {
             options={pairCurrencies}
           />
         </Container>
-        <Container sx={{ mt: 5 }}>
+        <Container container direction="column" sx={{ mt: 5 }}>
           <Grid
             container
             justifyContent="space-between"
@@ -211,6 +211,15 @@ const CurrencyConverter = () => {
             </Grid>
           </Grid>
         </Container>
+        {exchangeRate !== 0 && (
+          <Container sx={{ mt: 2 }}>
+            <Grid container justifyContent="flex-end">
+              <Typography variant="caption" color="gray">
+                {`Market rates collected - ${new Date().toLocaleString()}`}
+              </Typography>
+            </Grid>
+          </Container>
+        )}
       </Paper>
       {isLoading && (
         <Backdrop
