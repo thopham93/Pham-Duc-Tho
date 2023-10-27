@@ -22,15 +22,15 @@ const CurrencyOption = ({ name, control, label, options }: IProps) => {
       }}
       render={({ field: { onChange }, fieldState: { error } }) => (
         <Autocomplete
+          fullWidth
           id="currency-select"
-          sx={{ width: 300 }}
           options={options}
           autoHighlight
-          getOptionLabel={(option) => `${option.symbol}_${option.name}`}
+          getOptionLabel={(option) => `${option.symbol} - ${option.name}`}
           onChange={(_, option) => onChange(option ? option.symbol : "")}
           renderOption={(props, option) => (
             <Box
-              key={`${option.symbol}_${option.name}`}
+              key={`${option.symbol} - ${option.name}`}
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}

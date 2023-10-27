@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { Box, IconButton, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CurrencyOption, { IOption } from "./CurrencyOption";
-import IconSwap from "../assets/icons/icon-swap.png";
+import IconConverter from "../assets/icons/icon-convert.svg";
 import CurrencyInput from "./CurrencyInput";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
@@ -93,10 +93,14 @@ const CurrencyConverter = () => {
         finalize(() => dismissLoader())
       )
       .subscribe((resp: any) => {
-        const filterCurrencies = currencies.filter((val) =>
-          resp.includes(val.symbol)
-        );
-        setPairCurrencies(filterCurrencies);
+        if (Array.isArray(resp)) {
+          const filterCurrencies = currencies.filter((val) =>
+            resp.includes(val.symbol)
+          );
+          setPairCurrencies(filterCurrencies);
+        } else {
+          setPairCurrencies([]);
+        }
       });
   };
 
@@ -145,7 +149,7 @@ const CurrencyConverter = () => {
         }}
         elevation={3}
       >
-        <Container>
+        <Container direction="column">
           <CurrencyOption
             name="fromCurrency"
             control={control}
@@ -153,7 +157,7 @@ const CurrencyConverter = () => {
             options={currencies}
           />
           <IconButton aria-label="btn-swap">
-            <img src={IconSwap} alt="swap" width={30} height={30} />
+            <img src={IconConverter} alt="swap" width={30} height={30} />
           </IconButton>
           <CurrencyOption
             name="toCurrency"
@@ -163,7 +167,12 @@ const CurrencyConverter = () => {
           />
         </Container>
         <Container sx={{ mt: 5 }}>
-          <Grid container justifyContent="space-between" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ gap: 4 }}
+          >
             <Grid>
               <CurrencyInput name="amount" control={control} label="Amount" />
               <Button
@@ -187,7 +196,7 @@ const CurrencyConverter = () => {
                     color: "#1A202C",
                   }}
                 >
-                  {`${values.amount} ${watch("fromCurrency")}`}
+                  {`${values.amount || 0} ${watch("fromCurrency")}`}
                 </Typography>
                 <Typography
                   sx={{
